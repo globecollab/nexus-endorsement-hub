@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Protocol Commons Endorsement</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; }
+    label { display: block; margin: 0.5rem 0 0.2rem; }
+    textarea { width: 100%; height: 6rem; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Endorse a Protocol</h1>
+  <form id="endorseForm">
+    <label for="name">Your Name</label>
+    <input id="name" name="name" required>
+
+    <label for="protocol">Protocol Name</label>
+    <input id="protocol" name="protocol" required>
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" required></textarea>
+
+    <button type="submit">Send Endorsement</button>
+  </form>
+
+  <script>
+    document.getElementById('endorseForm').onsubmit = async e => {
+      e.preventDefault();
+      const data = {
+        name: e.target.name.value,
+        protocol: e.target.protocol.value,
+        message: e.target.message.value,
+        date: new Date().toISOString()
+      };
+      const resp = await fetch('/api/endorse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (resp.ok) alert('Thank you for your endorsement!');
+      else alert('Something went wrong.');
+    };
+  </script>
+</body>
+</html>
